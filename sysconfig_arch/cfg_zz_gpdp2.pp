@@ -5,6 +5,14 @@
 #          standards
 #
 
+file {'/etc/X11/xorg.conf.d/00-keyboard.conf':
+    ensure  => file,
+    backup  => false,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    source  => "puppet:///modules/gpdp2/etc/X11/xorg.conf.d/00-keyboard.conf",
+}
 file {'/etc/X11/xorg.conf.d/20-intel.conf':
     ensure  => file,
     backup  => false,
