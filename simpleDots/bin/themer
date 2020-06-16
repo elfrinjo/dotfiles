@@ -1,0 +1,23 @@
+#!/bin/bash
+##################################################################
+##     Themer
+#      Switch Xresources colortheme from dark to light and back
+#      again.
+#
+
+statefile=~/.local/themer.state
+
+state=$(cat $statefile)
+
+case "$state" in
+	Dark)  xrdb -merge ~/.bin/themer_Xresources.light
+		   echo Light > $statefile
+           ;;
+	Light) xrdb -merge ~/.bin/themer_Xresources.dark
+	       echo Dark > $statefile
+           ;;
+esac
+
+state=$(cat $statefile)
+notify-send "Console Theme" "$state"
+

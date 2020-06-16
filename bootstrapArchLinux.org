@@ -1,0 +1,189 @@
+#+TITLE: Arch Linux Installation
+* Preparation
+- Download Arch Linux ISO image
+- Write it to an usb drive with
+#+BEGIN_SRC
+  $ dd if=[ARCH-LINUX.iso] of=[/path/to/usbdrive]
+#+END_SRC
+- Boot the computer from this stick
+
+* Prepare the disk
+We will partition the disk drive for UEFI boot.
+The root disk will be encrypted, /boot will reside inside the unencrypted EFI service partition.
+The diskdevice is /dev/sda.
+
+** Partition the disk
+- Write some zeros to the disk to make sure there is no bootsector left.
+#+BEGIN_SRC
+  $ dd if=/dev/zero of=/dev/sda
+#+END_SRC
+- Abort after a few seconds.
+-  Create partitions and format them
+#+BEGIN_SRC
+  $ gdisk /dev/sda
+    | o [ENTER] to create a new empty GUID partition table (GPT)
+    | y [ENTER] to confirm
+    |
+    | n [ENTER] add a new partition
+    | [ENTER] to select default partition number of 1
+    | [ENTER] to select default start at first sector
+    | +512M [ENTER] make that size partition for booting
+    | ef00 [ENTER] EFI partition type
+    |
+    | n [ENTER] add a new partition
+    | [ENTER] to select default partition number of 2
+    | [ENTER] to select default start at first sector
+    | +60G [ENTER] allocate whatever size wanted for linux
+    |
+    | w [ENTER] Write changes
+    | y [ENTER] confirm
+#+END_SRC
+
+** Encrypt the root partition
+- Create and open the root partition
+#+BEGIN_SRC
+  $ cryptsetup luksFormat -v -s 512 -h sha512 /dev/sda2
+  $ cryptsetup open /dev/sda2 cryptroot
+#+END_SRC
+- Format with ext4
+#+BEGIN_SRC
+  $ mkfs.ext4 /dev/mapper/cryptroot
+#+END_SRC
+- Mount the encrypted volume
+#+BEGIN_SRC
+  $ mount /dev/mapper/cryptroot /mnt
+#+END_SRC
+
+** Mount the /boot partition
+#+BEGIN_SRC
+  $ mkfs.fat -F32 /dev/sda1
+  $ mkdir /mnt/boot
+  $ mount /dev/sda1 /mnt/boot
+#+END_SRC
+
+* Install the base-system
+- Connect to wifi
+#+BEGIN_SRC
+  $ wifi-menu
+#+END_SRC
+- Select a nearby (possibly faster) mirror by editing /etc/pacman.d/mirrorlist
+- Install the base-system
+#+BEGIN_SRC
+  $ pacstrap /mnt base base-devel dialog openssl-1.0 git intel-ucode \
+    wpa_supplicant puppet linux linux-firmware vi netctl
+#+END_SRC
+- Generate fstab for the new system
+#+BEGIN_SRC
+  $ genfstab -pU /mnt >> /mnt/etc/fstab
+#+END_SRC
+
+* Configure the new system
+- Chroot into the new system
+#+BEGIN_SRC
+  $ arch-chroot /mnt /bin/bash
+#+END_SRC
+- Set the hostname
+#+BEGIN_SRC
+  $ echo MYHOSTNAME > /etc/hostname
+#+END_SRC
+- Edit /etc/vconsole.conf to set keyboard and font
+#+BEGIN_SRC
+  $ vi /etc/vconsole.conf
+    FONT=latarcyrheb-sun32
+    KEYMAP=de
+#+END_SRC
+The FONT setting is optional. latarcyrheb-sun32 is useful for small hidpi devices like GPD Pocket.
+- Add encryption components to initramfs
+#+BEGIN_SRC
+  $ vi /etc/mkinitcpio.conf
+    ...
+    HOOKS=(base udev autodetect keyboard keymap consolefont modconf block encrypt
+           filesystems fsck)
+    ...
+  $ mkinitcpio -P
+#+END_SRC
+- Install bootloader
+#+BEGIN_SRC
+  $ bootctl install
+#+END_SRC
+- Configure the bootloader
+#+BEGIN_SRC
+  $ vi /boot/loader/loader.conf
+    default arch
+    auto-firmware no
+    timeout 0
+    console-mode 2
+    editor no
+#+END_SRC
+- Configure the bootloader entry
+#+BEGIN_SRC
+  $ blkid | grep sda2 | cut -d \" -f 2 > /boot/loader/entries/arch.conf
+  $ vi /boot/loader/arch.conf
+    title Arch Linux
+    linux /vmlinuz-linux
+    initrd /intel-ucode.img
+    initrd /initramfs-linux.img
+    options cryptdevice=UUID=[DEVICE-UUID]:cryptroot root=/dev/mapper/cryptroot rw
+   fbcon=rotate:1
+#+END_SRC
+DEVICE-UUID is the string we added with the first command.
+fbcon=rotate:1 rotates the display. This is ONLY NEEDED on device like GPD Pocket.
+
+* More configuration
+- Perform basic systemconfiguration
+#+BEGIN_SRC
+  $ git clone https://github.com/elfrinjo/dotfiles
+  $ cd dotfiles
+  $ ./Setup.sh
+  $ cd sysconfig_arch
+  $ puppet apply --modulepath ./modules cfg_base.pp
+#+END_SRC
+- Setup.sh can take options to replace some configfiles. Options are:
+| Option | Description                            |
+|--------+----------------------------------------|
+| gpdp2  | Some differences for the GPD Pocket II |
+|        |                                        |
+- Change the root password
+#+BEGIN_SRC
+  $ passwd
+#+END_SRC
+- Create useraccount
+#+BEGIN_SRC
+  $ useradd -m -G sudo [USERNAME]
+  $ passwd [USERNAME]
+#+END_SRC
+- Exit the chroot
+#+BEGIN_SRC
+  $ exit
+#+END_SRC
+- Shutdown the system
+#+BEGIN_SRC
+  $ shutdown -h now
+#+END_SRC
+- Remove usb-drive
+- Start the computer
+- Enter drive encryption password
+- Logon as the newly created user
+- Connect to wifi
+#+BEGIN_SRC
+  $ sudo wifi-menu
+#+END_SRC
+- Perform more system configuration
+#+BEGIN_SRC
+  $ git clone https://github.com/elfrinjo/dotfiles
+  $ cd dotfiles
+  $ ./Setup.sh
+  $ cd sysconfig_arch
+  $ sudo puppet apply --modulepath ./modules cfg_[WANTED-CONFIGS].pp
+#+END_SRC
+- If there are special configfiles for Setup.sh, repeat with appropriate options. (See above)
+- configs with cfg_zz need to be applied last as they overwrite previous settings
+- At some point the Desktop will start. When this happens, just log on and continue inside a terminal
+- Update the system
+#+BEGIN_SRC
+  $ pacman -Syu
+#+END_SRC
+- Reboot
+#+BEGIN_SRC
+  $ reboot
+#+END_SRC

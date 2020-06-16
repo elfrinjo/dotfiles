@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# PATH
+which ruby >/dev/null 2>&1 && PATH="$(ruby -e 'print Gem.user_dir')/bin:$PATH"
+export PATH=~/.local/bin:~/.bin:$PATH
+
+# Make vim the default editor
+export EDITOR=vim;
+export TERMINAL="urxvt";
+
+# Larger bash history (allow 32³ entries; default is 500)
+export HISTSIZE=50000000;
+export HISTFILESIZE=$HISTSIZE;
+export HISTCONTROL=ignoredups;
+# Make some commands not show up in history
+export HISTIGNORE=" *:ls:cd:cd -:pwd:exit:date:&::[bf]g:exit:pwd:clear:mplayer";
+
+# Deutsches System aber englische Messages und Sortierung
+export LC_MESSAGES="en_US.UTF-8"
+export LC_COLLATE="C"
+export LANG="de_DE.UTF-8"
+export LC_CTYPE="de_DE.UTF-8"
+export LC_NUMERIC="de_DE.UTF-8"
+export LC_TIME="de_DE.UTF-8"
+export LC_MONETARY="de_DE.UTF-8"
+export LC_PAPER="de_DE.UTF-8"
+export LC_NAME="de_DE.UTF-8"
+export LC_ADDRESS="de_DE.UTF-8"
+export LC_TELEPHONE="de_DE.UTF-8"
+export LC_MEASUREMENT="de_DE.UTF-8"
+export LC_IDENTIFICATION="de_DE.UTF-8"
+unset LC_ALL
+
+# Highlight section titles in manual pages
+export LESS_TERMCAP_md="${yellow}";
+
+# Don’t clear the screen after quitting a manual page
+export MANPAGER="less -X";
+
+export DBUS_SESSION_BUS_ADDRESS=unix:path=/var/run/user/$(id -u)/bus;
+
+export TODOTXT_DEFAULT_ACTION=ls
+
+# hidpi for gtk apps
+#export GDK_SCALE=2
+#export GDK_DPI_SCALE=0.5
+#export QT_DEVICE_PIXEL_RATIO=2

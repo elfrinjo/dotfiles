@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+MimeType=application/x-gnucash;
+Name[de]=GnuCash
+Name=GnuCash
+GenericName[de]=Finanzmanagement
+GenericName=Finance Management
+Comment[de]=Verwaltung der Finanzen von Privatanwendern und Kleinbetrieben.
+Comment=Manage your finances, accounts, and investments
+Exec=LC_MESSAGES=de_DE.UTF-8 gnucash %f
+Icon=gnucash-icon
+StartupNotify=true
+Terminal=false
+Categories=Office;Finance;

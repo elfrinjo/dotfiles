@@ -1,0 +1,9 @@
+e asm.bbline      = true
+e asm.highlight   = $$
+e dir.projects    = .
+e scr.color       = 2
+e scr.color.grep  = true
+e scr.scrollbar   = true
+e scr.utf8        = true
+e scr.utf8.curvy  = true
+eco solarized

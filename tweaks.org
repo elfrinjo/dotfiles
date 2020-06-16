@@ -1,0 +1,7 @@
+* Firefox about:config
+| Option                                   | Value | Description                              |
+|------------------------------------------+-------+------------------------------------------|
+| privacy.donottrackheader.enabled         | true  | Send Do-not-track                        |
+| findbar.highlightAll                     | true  | Highlight all partial results in search  |
+| browser.sessionstore.max_resumed_crashes | -1    | Do not show "Upps, we could not recover" |
+|                                          |       |                                          |

@@ -1,0 +1,6 @@
+configDots/ranger/bookmarks
+configDots/ranger/history
+configDots/ranger/tagged
+
+simpleDots/vim/vimplug-plugins
+!simpleDots/vim/vimplug-plugins/.gitkeep

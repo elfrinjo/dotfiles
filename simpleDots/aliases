@@ -1,0 +1,139 @@
+#!/bin/bash
+
+# debian specific aliases
+alias pbcopy='xclip -selection clipboard'
+alias pbpaste='xclip -selection clipboard -o'
+
+# Easier navigation: .., ..., ...., ....., ~ and -
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ~="cd ~" # `cd` is probably faster to type though
+alias -- -="cd -"
+
+# Shortcuts
+alias dl="cd ~/Downloads"
+alias g="git"
+alias h="history"
+
+## Editor
+alias e='$EDITOR '
+alias E='sudo $EDITOR '
+
+# Use dircolors if dircolordb is available
+test -f ~/.dircolors && eval $(dircolors ~/.dircolors)
+
+# Always use color output for `ls`
+# And sort directories before files
+alias ls="ls --color --group-directories-first"
+
+# ls abbreviation
+alias l="ls -l"
+alias ll="ls -l"
+alias la="ls -la"
+
+# Always enable colored `grep` output
+alias grep='grep --color=auto '
+
+# Enable aliases to be sudo’ed
+alias sudo='sudo '
+
+# Implicit sudos
+alias docker='sudo docker '
+alias docker-compose='sudo docker-compose '
+alias systemctl='sudo systemctl '
+
+# Get week number
+alias week='date +%V'
+
+# Stopwatch
+alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'
+
+# IP addresses
+alias pubip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias localip="ip a | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1' | grep -v '172.17.'"
+
+# View HTTP traffic
+alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
+alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
+
+# Canonical hex dump some systems have this symlinked
+command -v hd > /dev/null || alias hd="hexdump -C"
+
+# OS X has no `md5sum`, so use `md5` as a fallback
+command -v md5sum > /dev/null || alias md5sum="md5"
+
+# OS X has no `sha1sum`, so use `shasum` as a fallback
+command -v sha1sum > /dev/null || alias sha1sum="shasum"
+
+# Trim new lines and copy to clipboard
+alias c="tr -d '\n' | xclip -selection clipboard"
+
+# URL-encode strings
+alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"'
+
+# Intuitive map function
+# For example, to list all directories that contain a certain file:
+# find . -name .gitattributes | map dirname
+alias map="xargs -n1"
+
+# One of @janmoesen’s ProTip™s
+for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
+	alias "$method"="lwp-request -m '$method'"
+done
+
+# Kill all the tabs in Chrome to free up memory
+# [C] explained: http://www.commandlinefu.com/commands/view/402/exclude-grep-from-your-grepped-output-of-ps-alias-included-in-description
+alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
+
+# Lock the screen (when going AFK)
+alias afk="~/.bin/~/.bin/screenlock.sh"
+
+# vhosts
+alias hosts='sudo vim /etc/hosts'
+
+# copy working directory
+alias cwd='pwd | tr -d "\r\n" | xclip -selection clipboard'
+
+# copy file interactive
+alias cp='cp -i'
+
+# move file interactive
+alias mv='mv -i'
+
+# untar
+alias untar='tar xvf'
+
+# Pipe my public key to my clipboard.
+alias pubkey="more ~/.ssh/id_rsa.pub | xclip -selection clipboard | echo '=> Public key copied to pasteboard.'"
+
+# Pipe my private key to my clipboard.
+alias privkey="more ~/.ssh/id_rsa | xclip -selection clipboard | echo '=> Private key copied to pasteboard.'"
+
+# vi == vim
+alias vi='vim'
+
+# vim w/ forced latin1
+alias l1vim='vim -c "e ++enc=latin1"'
+
+# Temperatursensoren mit Pfad
+alias get_systemp="paste <(cat /sys/class/thermal/thermal_zone*/type) <(cat /sys/class/thermal/thermal_zone*/temp) <(ls -1 /sys/class/thermal/thermal_zone*/temp) | column -s $'\t' -t"
+
+# Spezialitäten für Arch Linux
+alias y_clean='yaourt -Rsn $(yaourt -Qqdt)'
+alias y_update='yaourt -Syu --aur'
+alias y_inst='yaourt -Sy'
+alias y_rem='yaourt -Rsn'
+
+# Passwort erstellen
+alias mkpasswd='openssl rand -base64 40 | cut -c1-40'
+
+# Emacs called from bash should be run inside the terminal
+alias emacs='emacs -nw'
+
+# k8s simplifications
+alias k='kubectl'
+source <(kubectl completion bash)
+complete -F __start_kubectl k
+alias kns='kubectl config set-context --current --namespace'

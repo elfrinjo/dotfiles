@@ -1,0 +1,10 @@
+#!/bin/sh
+# Credit to Maddison Hellstrom (@b0o on Github)
+text=$(xclip -out -selection clipboard)
+notify-send --expire-time 3000 "Clipboard" "$text"
+qrencode --output - --size 1 "$text" \
+         | feh --zoom max \
+               --fullscreen \
+               --force-aliasing \
+               --image-bg white \
+               -
