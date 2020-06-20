@@ -18,7 +18,7 @@ package {'vim':         ensure => installed}
 file {'/etc/vconsole.conf':
     ensure  => file,
     backup  => false,
-    content => "KEYMAP=de-latin1-nodeadkeys\nFONT=latarcyrheb-sun32\n",
+    content => "KEYMAP=de-latin1-nodeadkeys\n",
     owner   => 'root',
     group   => 'root',
     mode    => '0644',

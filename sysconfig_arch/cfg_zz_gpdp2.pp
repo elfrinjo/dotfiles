@@ -5,6 +5,15 @@
 #          standards
 #
 
+file {'/etc/vconsole.conf':
+    ensure  => file,
+    backup  => false,
+    content => "KEYMAP=de-latin1-nodeadkeys\nFONT=latarcyrheb-sun32\n",
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+}
+
 file {'/etc/X11/xorg.conf.d/00-keyboard.conf':
     ensure  => file,
     backup  => false,
