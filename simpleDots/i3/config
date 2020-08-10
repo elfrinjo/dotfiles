@@ -31,7 +31,8 @@ font pango:B612Mono 10
 #client.background       #ffffff
 
 ## Green theme
-client.focused           #77994B #547628 #EEEEEE #41FF00
+#client.focused           #77994B #547628 #EEEEEE #41FF00
+client.focused           #859900 #859900 #EEEEEE #41FF00
 client.focused_inactive  #333333 #5F676A #EEEEEE #333333
 
 # Use Mouse+$mod to drag floating windows to their wanted position
@@ -270,6 +271,7 @@ exec_always --no-startup-id ~/.i3/alternating_layouts.py
 for_window [class="Argon"] floating enable
 for_window [class="Vlc"] floating enable
 for_window [class="Ghidra"] floating enable
+for_window [class="Veracrypt"] floating enable
 for_window [title="^CSSH.*"] floating enable
 for_window [title="Formula editor"] floating enable
 for_window [title="Wfica"] fullscreen disable
