@@ -6,7 +6,7 @@ export PATH=~/.local/bin:~/.bin:$PATH
 
 # Make vim the default editor
 export EDITOR=vim;
-export TERMINAL="urxvt";
+export TERMINAL="alacritty";
 
 # Larger bash history (allow 32³ entries; default is 500)
 export HISTSIZE=50000000;
