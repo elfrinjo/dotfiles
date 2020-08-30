@@ -383,5 +383,5 @@ d_r2s(){
 
 ## Menu-Man
 mman(){
-	man -k . | sort | dmenu -l 30 | awk '{print substr($2, 2, length($2) - 2) " " $1}' | xargs -r urxvt -e man
+	man -k . | sort | dmenu -l 30 | awk '{print substr($2, 2, length($2) - 2) " " $1}' | xargs -r $TERMINAL -e man
 }

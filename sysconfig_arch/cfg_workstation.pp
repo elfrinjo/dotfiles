@@ -12,6 +12,9 @@ service {'ctrl-alt-del.target':
 package {'acpi':                         ensure => installed}
 package {'alsa-utils':                   ensure => installed}
 package {'arandr':                       ensure => installed}
+package {'aspell':                       ensure => installed}
+package {'aspell-de':                    ensure => installed}
+package {'aspell-en':                    ensure => installed}
 package {'autoconf':                     ensure => installed}
 package {'automake':                     ensure => installed}
 package {'bash':                         ensure => installed}
@@ -66,6 +69,7 @@ package {'imagemagick':                  ensure => installed}
 package {'inetutils':                    ensure => installed}
 package {'iproute2':                     ensure => installed}
 package {'iputils':                      ensure => installed}
+package {'ispell':                       ensure => installed}
 package {'iw':                           ensure => installed}
 package {'jfsutils':                     ensure => installed}
 package {'keepassxc':                    ensure => installed}

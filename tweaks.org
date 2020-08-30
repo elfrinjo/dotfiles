@@ -5,3 +5,10 @@
 | findbar.highlightAll                     | true  | Highlight all partial results in search  |
 | browser.sessionstore.max_resumed_crashes | -1    | Do not show "Upps, we could not recover" |
 |                                          |       |                                          |
+
+* MS Teams: Black box instead of screensharing with i3wm
+https://docs.microsoft.com/en-us/answers/questions/42095/sharing-screen-not-working-anymore-bug.html#answer-42165
+#+BEGIN_EXAMPLE
+  sudo mv /usr/share/teams/resources/app.asar.unpacked/node_modules/slimcore/bin/rect-overlay \
+          /usr/share/teams/resources/app.asar.unpacked/node_modules/slimcore/bin/rect-overlay.borked
+#+END_EXAMPLE

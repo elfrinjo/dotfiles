@@ -214,8 +214,8 @@ bindsym XF86Sleep exec "~/.bin/screenlock.sh"
 exec --no-startup-id xautolock -time 15 -locker "~/.bin/screenlock.sh" &
 
 # quick terminal
-bindsym $mod+$alt+Shift+F1 exec --no-startup-id urxvt -name metask -e bash -o ignoreeof
-exec --no-startup-id urxvt -name metask -e bash -o ignoreeof
+bindsym $mod+$alt+Shift+F1 exec --no-startup-id $TERMINAL -name metask -e bash -o ignoreeof
+exec --no-startup-id $TERMINAL -name metask -e bash -o ignoreeof
 for_window [instance="metask"] floating enable;
 for_window [instance="metask"] move scratchpad; \
            [instance="metask"] scratchpad show; \

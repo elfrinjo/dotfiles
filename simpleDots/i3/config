@@ -8,7 +8,7 @@ set $alt Mod1
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 #font pango:Terminus 8
-font pango:B612Mono 10
+font pango:Inconsolata 10
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -214,8 +214,8 @@ bindsym XF86Sleep exec "~/.bin/screenlock.sh"
 exec --no-startup-id xautolock -time 15 -locker "~/.bin/screenlock.sh" &
 
 # quick terminal
-bindsym $mod+$alt+Shift+F1 exec --no-startup-id urxvt -name metask -e bash -o ignoreeof
-exec --no-startup-id urxvt -name metask -e bash -o ignoreeof
+bindsym $mod+$alt+Shift+F1 exec --no-startup-id $TERMINAL --class metask -e bash -o ignoreeof
+exec --no-startup-id $TERMINAL --class metask -e bash -o ignoreeof
 for_window [instance="metask"] floating enable;
 for_window [instance="metask"] move scratchpad; \
            [instance="metask"] scratchpad show; \
@@ -243,7 +243,6 @@ bindsym $mod+$alt+b exec ~/.bin/startAltBrowser.sh
 bindsym $mod+n exec ~/.bin/startBrowserPrivat.sh
 bindsym $mod+$alt+n exec ~/.bin/startAltBrowserPrivat.sh
 bindsym $mod+m exec ~/.bin/dmenu_dir2menu.sh ~/.screenlayout/
-bindsym $mod+t exec ~/.bin/themer
 
 # Get current public IP or restart a fritz.box connection
 bindsym $mod+i exec --no-startup-id notify-send "Public IPv4 address" "$(curl --silent https://ident.me)"
@@ -270,6 +269,7 @@ exec_always --no-startup-id ~/.i3/alternating_layouts.py
 for_window [class="Argon"] floating enable
 for_window [class="Vlc"] floating enable
 for_window [class="Ghidra"] floating enable
+for_window [class="Veracrypt"] floating enable
 for_window [title="^CSSH.*"] floating enable
 for_window [title="Formula editor"] floating enable
 for_window [title="Wfica"] fullscreen disable
