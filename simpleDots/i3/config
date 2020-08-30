@@ -246,7 +246,7 @@ bindsym $mod+m exec ~/.bin/dmenu_dir2menu.sh ~/.screenlayout/
 bindsym $mod+t exec ~/.bin/themer
 
 # Get current public IP or restart a fritz.box connection
-bindsym $mod+i exec --no-startup-id notify-send "Public IP address" "$(curl https://canihazip.com/s)"
+bindsym $mod+i exec --no-startup-id notify-send "Public IPv4 address" "$(curl --silent https://ident.me)"
 bindsym $mod+Shift+i exec --no-startup-id "~/.bin/reconnectfritzbox.sh"
 
 # Get current uptime
