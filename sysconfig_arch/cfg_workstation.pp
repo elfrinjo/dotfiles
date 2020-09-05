@@ -11,6 +11,7 @@ service {'ctrl-alt-del.target':
 ## Lots of Packages...
 package {'acpi':                         ensure => installed}
 package {'alsa-utils':                   ensure => installed}
+package {'alacritty':                    ensure => installed}
 package {'arandr':                       ensure => installed}
 package {'aspell':                       ensure => installed}
 package {'aspell-de':                    ensure => installed}

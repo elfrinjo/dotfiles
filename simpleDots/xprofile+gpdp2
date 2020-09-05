@@ -2,6 +2,9 @@
 eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
 export SSH_AUTH_SOCK
 
+## Import exports
+source ~/.exports
+
 ## Setup Keyboard
 xmodmap -e 'keycode  49 = Multi_key'        # Kanji-key
 xmodmap -e 'keycode 132 = grave asciitilde' # grave-key
@@ -9,11 +12,15 @@ xmodmap -e 'keycode  29 = z Z z Z'          # y-z
 xmodmap -e 'keycode  52 = y Y y Y'          # z-y
 
 ## Setup resources
-xrdb -merge ~/.Xresources
 test -f ~/.local/Xresources && xrdb -merge ~/.local/Xresources
-echo Dark > ~/.local/themer.state
 
 ## Setup Screen
 test -x ~/.screenlayout/.default && ~/.screenlayout/.default
 test -x ~/.fehbg && ~/.fehbg
 
+
+
+
+## Start Keyring-Daemon
+eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
+export SSH_AUTH_SOCK
