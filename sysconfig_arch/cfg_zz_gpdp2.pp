@@ -46,6 +46,14 @@ file {'/etc/X11/xorg.conf.d/99-touchscreen.conf':
     mode    => '0644',
     source  => "puppet:///modules/gpdp2/etc/X11/xorg.conf.d/99-touchscreen.conf",
 }
+file {'/etc/X11/Xresources':
+    ensure  => file,
+    backup  => false,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    source  => "puppet:///modules/gpdp2/etc/X11/Xresources",
+}
 
 file {'/etc/modules-load.d/gpd-pocket-fan.conf':
     ensure  => file,
