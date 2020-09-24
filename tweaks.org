@@ -12,3 +12,9 @@ https://docs.microsoft.com/en-us/answers/questions/42095/sharing-screen-not-work
   sudo mv /usr/share/teams/resources/app.asar.unpacked/node_modules/slimcore/bin/rect-overlay \
           /usr/share/teams/resources/app.asar.unpacked/node_modules/slimcore/bin/rect-overlay.borked
 #+END_EXAMPLE
+
+* Filemanager: Folders before files
+#+BEGIN_EXAMPLE
+gsettings set org.gtk.Settings.FileChooser sort-directories-first true
+#+END_EXAMPLE
+

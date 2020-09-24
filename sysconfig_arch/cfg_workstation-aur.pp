@@ -8,6 +8,6 @@
 package {'free42':                       ensure => installed}
 package {'insync':                       ensure => installed}
 package {'c-lolcat':                     ensure => installed}
-package {'ttf-b612':                     ensure => installed}
+package {'python-i3-py':                 ensure => installed}
 package {'ttf-unifont':                  ensure => installed}
 package {'ttf-symbola':                  ensure => installed}
