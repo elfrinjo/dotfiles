@@ -385,3 +385,15 @@ d_r2s(){
 mman(){
 	man -k . | sort | dmenu -l 30 | awk '{print substr($2, 2, length($2) - 2) " " $1}' | xargs -r $TERMINAL -e man
 }
+
+## Dump SSL Cert from host
+sslcheck(){
+	echo -n | openssl s_client -connect $* | tee /dev/tty | openssl x509 -text -noout
+}
+
+## kubesel: fzf-select a cubeconfig and source it
+kubesel(){
+	kubeconfig=$(find ~/.kube/kubesel -type f | rev | cut -d "/" -f 1 | rev | sort | fzf)
+	export KUBECONFIG=~/.kube/kubesel/$kubeconfig
+}
+so

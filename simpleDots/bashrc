@@ -94,3 +94,8 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 if [[ -f $HOME/.bash_profile ]]; then
 	source $HOME/.bash_profile
 fi
+
+cd $HOME
+
+/usr/bin/keychain --nogui $HOME/.ssh/id_rsa
+source $HOME/.keychain/$HOSTNAME-sh
