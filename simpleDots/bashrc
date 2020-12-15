@@ -97,5 +97,4 @@ fi
 
 cd $HOME
 
-test -z $noKeychain && /usr/bin/keychain --nogui $HOME/.ssh/id_rsa
-source $HOME/.keychain/$HOSTNAME-sh
+test -f $HOME/.keychain/$HOSTNAME-sh && source $HOME/.keychain/$HOSTNAME-sh

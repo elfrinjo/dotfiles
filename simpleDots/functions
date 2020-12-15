@@ -387,6 +387,8 @@ mman(){
 }
 
 ## Dump SSL Cert from host
+## sslcheck example.com:25 -starttls smtp
+## sslcheck example.com:443
 sslcheck(){
 	echo -n | openssl s_client -connect $* | tee /dev/tty | openssl x509 -text -noout
 }
@@ -396,4 +398,10 @@ kubesel(){
 	kubeconfig=$(find ~/.kube/kubesel -type f | rev | cut -d "/" -f 1 | rev | sort | fzf)
 	export KUBECONFIG=~/.kube/kubesel/$kubeconfig
 }
-so
+
+## SSH agent
+## Add sth like test -z $noKeychain && agent to ~/.extra
+function agent(){
+	/usr/bin/keychain --nolock --nogui $HOME/.ssh/id_rsa
+	source $HOME/.keychain/$HOSTNAME-sh
+}
