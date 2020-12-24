@@ -132,11 +132,5 @@ alias mkpasswd='openssl rand -base64 40 | cut -c1-40'
 # Emacs called from bash should be run inside the terminal
 alias emacs='emacs -nw'
 
-# k8s simplifications
-alias k='kubectl'
-source <(kubectl completion bash)
-complete -F __start_kubectl k
-alias kns='kubectl config set-context --current --namespace'
-
 # Copy latest Download into primary selection
 alias cld='cat $(ls --directory --format single-column -t --color=never ~/Downloads/* | head --lines 1) | xclip -in'

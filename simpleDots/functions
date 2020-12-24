@@ -393,15 +393,34 @@ sslcheck(){
 	echo -n | openssl s_client -connect $* | tee /dev/tty | openssl x509 -text -noout
 }
 
-## kubesel: fzf-select a cubeconfig and source it
-kubesel(){
-	kubeconfig=$(find ~/.kube/kubesel -type f | rev | cut -d "/" -f 1 | rev | sort | fzf)
-	export KUBECONFIG=~/.kube/kubesel/$kubeconfig
-}
-
 ## SSH agent
 ## Add sth like test -z $noKeychain && agent to ~/.extra
 function agent(){
 	/usr/bin/keychain --nolock --nogui $HOME/.ssh/id_rsa
 	source $HOME/.keychain/$HOSTNAME-sh
+}
+
+
+
+## Kubernetes Goodies
+k(){
+	kubectl $*
+}
+
+k-sel(){
+	kubeconfig=$(find ~/.kube/kubesel -type f | rev | cut -d "/" -f 1 | rev | sort | fzf --height=25%)
+	export KUBECONFIG=~/.kube/kubesel/$kubeconfig
+	echo
+	kubectl config get-contexts
+}
+
+k-ns(){
+	kubectl config set-context
+	        --current \
+		    --namespace=$(kubectl get namespace | grep Active \
+			                                    | cut -d " " -f1 \
+												| fzf --height=25%
+						 )
+	echo
+	kubectl config get-contexts
 }
