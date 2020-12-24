@@ -1,0 +1,298 @@
+- name: "Configuration for all workstations"
+  hosts:      localhost
+  connection: local
+
+  tasks:
+
+  - name: "Install workstation packages"
+    package:
+      name:         '{{ item }}'
+      state:        present
+      update_cache: True
+    with_items:
+      - acpi
+      - alacritty
+      - arandr
+      - aspell
+      - aspell-de
+      - aspell-en
+      - bash
+      - bash-completion
+      - binutils
+      - blueman
+      - bluez-utils
+      - btrfs-progs
+      - coreutils
+      - cryptsetup
+      - curl
+      - device-mapper
+      - dialog
+      - diffutils
+      - dmenu
+      - dos2unix
+      - dosfstools
+      - dunst
+      - e2fsprogs
+      - emacs
+      - feh
+      - file
+      - filesystem
+      - findutils
+      - firefox
+      - firefox-i18n-de
+      - gnu-netcat
+      - grep
+      - gzip
+      - i3-wm
+      - i3lock
+      - i3status
+      - imagemagick
+      - inetutils
+      - ispell
+      - keepassxc
+      - less
+      - libreoffice-fresh
+      - licenses
+      - lightdm
+      - lightdm-gtk-greeter
+      - lightdm-gtk-greeter-settings
+      - linux
+      - linux-headers
+      - lm_sensors
+      - lshw
+      - lvm2
+      - man-db
+      - man-pages
+      - mc
+      - mercurial
+      - mplayer
+      - nano
+      - network-manager-applet
+      - networkmanager
+      - nmap
+      - nmon
+      - nomacs
+      - p7zip
+      - parcellite
+      - pcmanfm-gtk3
+      - perl
+      - perl-date-manip
+      - perl-finance-quote
+      - qrencode
+      - screenfetch
+      - scrot
+      - sed
+      - strace
+      - subversion
+      - texinfo
+      - texlive-bibtexextra
+      - texlive-core
+      - texlive-fontsextra
+      - texlive-formatsextra
+      - texlive-games
+      - texlive-humanities
+      - texlive-latexextra
+      - texlive-music
+      - texlive-pictures
+      - texlive-pstricks
+      - texlive-publishers
+      - texlive-science
+      - tree
+      - ttf-inconsolata
+      - unzip
+      - usbutils
+      - w3m
+      - wget
+      - wpa_supplicant
+      - wxmaxima
+      - xautolock
+      - xclip
+      - xdot
+      - xf86-input-synaptics
+      - xorg-apps
+      - xorg-xclipboard
+      - xorg-server
+      - xterm
+      - zathura
+      - zathura-pdf-mupdf
+
+  - name: "Install Audio System"
+    package:
+      name:         '{{ item }}'
+      state:        present
+      update_cache: False
+    with_items:
+      - alsa-utils
+      - pulseaudio
+      - pulseaudio-alsa
+      - pulseaudio-bluetooth
+      - pulsemixer
+      - pavucontrol
+      - pasystray
+      - paprefs
+
+  - name: "Systemd: Disable reboot on ctrl+alt+del"
+    systemd:
+      name:    ctrl-alt-del.target
+      masked:  yes
+
+  - name: "Systemd: logind.conf"
+    copy:
+      dest:     /etc/systemd/logind.conf
+      src:      ./lib/etc/systemd/logind.conf
+      owner:    root
+      group:    root
+      mode:     0644
+
+  - name: "Lightdm: greeter config"
+    copy:
+      dest:     /etc/lightdm/lightdm-gtk-greeter.conf
+      src:      ./lib/etc/lightdm/lightdm-gtk-greeter.conf
+      owner:    root
+      group:    root
+      mode:     0644
+
+  - name: "Lightdm: config"
+    copy:
+      dest:     /etc/lightdm/lightdm.conf
+      src:      ./lib/etc/lightdm/lightdm.conf
+      owner:    root
+      group:    root
+      mode:     0644
+
+  - name: "Pam: Login"
+    copy:
+      dest:     /etc/pam.d/login
+      src:      ./lib/etc/pam.d/login
+      owner:    root
+      group:    root
+      mode:     0644
+
+  - name: "Pam: Passwd"
+    copy:
+      dest:     /etc/pam.d/passwd
+      src:      ./lib/etc/pam.d/passwd
+      owner:    root
+      group:    root
+      mode:     0644
+
+  - name: "Service: No netctl"
+    service:
+      name:    netctl.service
+      state:   stopped
+      enabled: no
+
+  - name: "Service: NetworkManager"
+    service:
+      name:    NetworkManager.service
+      state:   started
+      enabled: yes
+
+  - name: "Service: lightdm"
+    service:
+      name:    lightdm.service
+      state:   started
+      enabled: yes
+
+## X11
+  - name: "X11: Keyboard"
+    when: "'gpd' not in inventory_hostname"
+    copy:
+      dest:     /etc/X11/xorg.conf.d/00-keyboard.conf
+      src:      ./lib/etc/X11/xorg.conf.d/00-keyboard.conf
+      owner:    root
+      group:    root
+      mode:     0644
+
+  - name: "X11: Keyboard (GPD Pocket 2)"
+    when: "'gpd' in inventory_hostname"
+    copy:
+      dest:     /etc/X11/xorg.conf.d/00-keyboard.conf
+      src:      ./lib/etc/X11/xorg.conf.d/00-keyboard.conf.gpdp2
+      owner:    root
+      group:    root
+      mode:     0644
+
+  - name: "X11: Intel Graphics (GPD Pocket 2)"
+    when: "'gpd' in inventory_hostname"
+    copy:
+      dest:     /etc/X11/xorg.conf.d/20-intel.conf
+      src:      ./lib/etc/X11/xorg.conf.d/20-intel.conf
+      owner:    root
+      group:    root
+      mode:     0644
+
+  - name: "X11: Monitor (GPD Pocket 2)"
+    when: "'gpd' in inventory_hostname"
+    copy:
+      dest:     /etc/X11/xorg.conf.d/30-display.conf
+      src:      ./lib/etc/X11/xorg.conf.d/30-display.conf
+      owner:    root
+      group:    root
+      mode:     0644
+
+  - name: "X11: Touchscreen (GPD Pocket 2)"
+    when: "'gpd' in inventory_hostname"
+    copy:
+      dest:     /etc/X11/xorg.conf.d/99-touchscreen.conf
+      src:      ./lib/etc/X11/xorg.conf.d/99-touchscreen.conf
+      owner:    root
+      group:    root
+      mode:     0644
+
+  - name: "X11: Xresources (GPD Pocket 2)"
+    when: "'gpd' in inventory_hostname"
+    copy:
+      dest:     /etc/X11/Xresources
+      src:      ./lib/etc/X11/resources
+      owner:    root
+      group:    root
+      mode:     0644
+
+
+## Notbook Specials
+  - name: "Install Notebook packages"
+    when: ansible_facts['form_factor'] == "Notebook"
+    package:
+      name:         '{{ item }}'
+      state:        present
+      update_cache: True
+    with_items:
+      - tlp
+
+  - name: "TLP: config"
+    when: ansible_facts['form_factor'] == "Notebook"
+    copy:
+      dest:     /etc/default/tlp
+      src:      ./lib/etc/default/tlp
+      owner:    root
+      group:    root
+      mode:     0644
+
+  - name: "TLP: Service"
+    when: ansible_facts['form_factor'] == "Notebook"
+    service:
+      name:    tlp
+      state:   started
+      enabled: yes
+
+## GPD Pocket Specials
+  - name: "GPD fan module"
+    when: "'gpd' in inventory_hostname"
+    copy:
+      dest:    /etc/modules-load.d/gpd-pocket-fan.conf
+      owner:   root
+      group:   root
+      mode:    0644
+      content: |
+        gpd-pocket-fan
+
+  - name: "GPD fan module config"
+    when: "'gpd' in inventory_hostname"
+    copy:
+      dest:    /etc/modprobe.d/gpd-pocket-fan.conf
+      owner:   root
+      group:   root
+      mode:    0644
+      content: |
+        options gpd-pocket-fan temp_limits=40000,40001,40002

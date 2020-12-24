@@ -1,5 +1,5 @@
 #%PAM-1.0
-##### THIS IS MANAGED BY PUPPET #####
+##### THIS IS MANAGED BY ANSIBLE #####
 
 auth       required     pam_securetty.so
 auth       requisite    pam_nologin.so

@@ -1,0 +1,125 @@
+- name: "Base config for all arch hosts"
+  hosts:      localhost
+  connection: local
+
+  tasks:
+
+  - name: "Install base packages"
+    package:
+      name:         '{{ item }}'
+      state:        present
+      update_cache: True
+    with_items:
+      - fortune-mod
+      - git
+      - intel-ucode
+      - make
+      - openssh
+      - rsync
+      - sudo
+      - vim
+
+  - name: "Console settings"
+    when: "'gpd' not in inventory_hostname"
+    copy:
+      dest:    /etc/vconsole.conf
+      owner:   root
+      group:   root
+      mode:    0644
+      content: |
+        KEYMAP=de-latin1-nodeadkeys
+
+  - name: "Console settings (GPD Pocket 2)"
+    when: "'gpd' in inventory_hostname"
+    copy:
+      dest:    /etc/vconsole.conf
+      owner:   root
+      group:   root
+      mode:    0644
+      content: |
+        KEYMAP=de-latin1-nodeadkeys
+        FONT=latarcyrheb-sun32
+
+  - name: "Localization: Set papersize"
+    copy:
+      dest:    /etc/papersize
+      owner:   root
+      group:   root
+      mode:    0644
+      content: |
+        a4
+
+  - name: "Localization: Set timezone"
+    file:
+      dest:  /etc/localtime
+      src:   /usr/share/zoneinfo/Europe/Berlin
+      state: link
+
+  - name: "Localization: locale.conf"
+    copy:
+      dest:    /etc/locale.conf"
+      owner:   root
+      group:   root
+      mode:    0644
+      content: |
+        ##### THIS IS MANAGED BY ANSIBLE #####
+        LANG=de_DE.UTF-8
+        LC_MESSAGES=en_US.UTF-8
+        LC_COLLATE=C
+        LC_CTYPE=de_DE.UTF-8
+        LC_NUMERIC=de_DE.UTF-8
+        LC_TIME=de_DE.UTF-8
+        LC_MONETARY=de_DE.UTF-8
+        LC_PAPER=de_DE.UTF-8
+        LC_NAME=de_DE.UTF-8
+        LC_ADDRESS=de_DE.UTF-8
+        LC_TELEPHONE=de_DE.UTF-8
+        LC_MEASUREMENT=de_DE.UTF-8
+        LC_IDENTIFICATION=de_DE.UTF-8
+
+  - name: "Localization: locale.gen"
+    register: locale_gen
+    copy:
+      dest:     /etc/locale.gen
+      owner:    root
+      group:    root
+      mode:     0644
+      content: |
+        ##### THIS IS MANAGED BY ANSIBLE #####
+        de_DE.UTF-8 UTF-8
+        en_US.UTF-8 UTF-8
+
+  - name: "Localization: Regenerate locale"
+    command: "/usr/bin/locale-gen"
+    when: locale_gen.changed
+
+  - name: "Use systemd-timesyncd"
+    service:
+      name:    systemd-timesyncd
+      state:   started
+      enabled: yes
+
+  - name: "Sudo: config file"
+    copy:
+      dest:     /etc/sudoers
+      src:      ./lib/etc/sudoers
+      owner:    root
+      group:    root
+      mode:     0440
+
+  - name: "Sudo: Create groups"
+    group:
+      name:   '{{ item }}'
+      state:  present
+      system: true
+    with_items:
+      - wheel
+      - sudo
+
+  - name: "Pacman configuration"
+    copy:
+      dest:     /etc/pacman.conf
+      src:      ./lib/etc/pacman.conf
+      owner:    root
+      group:    root
+      mode:     0644

@@ -1,3 +1,5 @@
+##### THIS FILE IS MANAGED BY ANSIBLE #####
+
 # ------------------------------------------------------------------------------
 # tlp - Parameters for power saving
 # See full explanation: https://linrunner.de/en/tlp/docs/tlp-configuration.html

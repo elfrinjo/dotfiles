@@ -70,7 +70,7 @@ The diskdevice is /dev/sda.
 - Install the base-system
 #+BEGIN_SRC
   $ pacstrap /mnt base base-devel dialog openssl-1.0 git intel-ucode \
-    wpa_supplicant puppet linux linux-firmware vi netctl
+    wpa_supplicant ansible linux linux-firmware vi netctl
 #+END_SRC
 - Generate fstab for the new system
 #+BEGIN_SRC
@@ -136,7 +136,7 @@ fbcon=rotate:1 rotates the display. This is ONLY NEEDED on device like GPD Pocke
   $ cd dotfiles
   $ ./Setup.sh
   $ cd sysconfig_arch
-  $ puppet apply --modulepath ./modules cfg_base.pp
+  $ sudo ansible-playbook baseconfig.yaml
 #+END_SRC
 - Setup.sh can take options to replace some configfiles. Options are:
 | Option | Description                            |
@@ -174,10 +174,9 @@ fbcon=rotate:1 rotates the display. This is ONLY NEEDED on device like GPD Pocke
   $ cd dotfiles
   $ ./Setup.sh
   $ cd sysconfig_arch
-  $ sudo puppet apply --modulepath ./modules cfg_[WANTED-CONFIGS].pp
+  $ sudo ansible-playbook workstation.yaml
 #+END_SRC
 - If there are special configfiles for Setup.sh, repeat with appropriate options. (See above)
-- configs with cfg_zz need to be applied last as they overwrite previous settings
 - At some point the Desktop will start. When this happens, just log on and continue inside a terminal
 - Update the system
 #+BEGIN_SRC
