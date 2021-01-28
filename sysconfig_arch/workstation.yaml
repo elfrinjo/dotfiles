@@ -53,6 +53,7 @@
       - less
       - libreoffice-fresh
       - licenses
+      - light
       - lightdm
       - lightdm-gtk-greeter
       - lightdm-gtk-greeter-settings
@@ -108,13 +109,21 @@
       - xautolock
       - xclip
       - xdot
-      - xf86-input-synaptics
+      - xf86-input-libinput
       - xorg-apps
       - xorg-xclipboard
       - xorg-server
       - xterm
       - zathura
       - zathura-pdf-mupdf
+
+  - name: "Remove unwanted packages"
+    package:
+      name:         '{{ item }}'
+      state:        absent
+      update_cache: True
+    with_items:
+      - xf86-input-synaptics
 
   - name: "Install Audio System"
     package:
@@ -200,6 +209,15 @@
     copy:
       dest:     /etc/X11/xorg.conf.d/00-keyboard.conf
       src:      ./lib/etc/X11/xorg.conf.d/00-keyboard.conf
+      owner:    root
+      group:    root
+      mode:     0644
+
+  - name: "X11: Touchpad"
+    when: "'gpd' not in inventory_hostname"
+    copy:
+      dest:     /etc/X11/xorg.conf.d/50-touchpad.conf
+      src:      ./lib/etc/X11/xorg.conf.d/50-touchpad.conf
       owner:    root
       group:    root
       mode:     0644
@@ -296,3 +314,14 @@
       mode:    0644
       content: |
         options gpd-pocket-fan temp_limits=40000,40001,40002
+
+
+
+  - name: "Set Xbacklight permissions by udev"
+    copy:
+      dest:    /etc/udev/rules.d/90-backlight.rules
+      owner:   root
+      group:   root
+      mode:    0644
+      content: |
+        SUBSYSTEM=="backlight", ACTION=="add", RUN+="/bin/chgrp video /sys/class/backlight/%k/brightness", RUN+="/bin/chmod g+w /sys/class/backlight/%k/brightness"

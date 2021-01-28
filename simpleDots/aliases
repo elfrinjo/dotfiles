@@ -121,8 +121,8 @@ alias l1vim='vim -c "e ++enc=latin1"'
 alias get_systemp="paste <(cat /sys/class/thermal/thermal_zone*/type) <(cat /sys/class/thermal/thermal_zone*/temp) <(ls -1 /sys/class/thermal/thermal_zone*/temp) | column -s $'\t' -t"
 
 # Spezialitäten für Arch Linux
-alias y_clean='pikaur -Rsn $(yaourt -Qqdt)'
-alias y_update='pikaur -Syu --aur'
+alias y_clean='pacman -Rs $(pacman -Qtdq)'
+alias y_update='pikaur -Syu'
 alias y_inst='pikaur -Sy'
 alias y_rem='pikaur -Rsn'
 

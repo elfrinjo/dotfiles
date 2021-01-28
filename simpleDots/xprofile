@@ -5,25 +5,11 @@ export SSH_AUTH_SOCK
 ## Import exports
 source ~/.exports
 
-
 ## Setup Keyboard
 xmodmap -e 'keycode 135 = Multi_key'   # remaps context-menu-key to Compose
 
 ## Setup resources
 test -f ~/.local/Xresources && xrdb -merge ~/.local/Xresources
-
-## Setup Touchpad
-synclient TapButton1=1 \
-    TapButton2=3 \
-    TapButton3=2 \
-    ClickFinger1=0 \
-    ClickFinger2=0 \
-    ClickFinger3=0 \
-    HorizTwoFingerScroll=1 \
-    VertTwoFingerScroll=1 \
-    HorizScrollDelta=-111 \
-    VertScrollDelta=-111 \
-    PalmDetect=1
 
 ## Setup Screen
 test -x ~/.screenlayout/.default && ~/.screenlayout/.default
