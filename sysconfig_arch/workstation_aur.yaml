@@ -13,11 +13,10 @@
 
   - name: Install build tools
     package:
-      name:         '{{ item }}'
+      name:
+        - base-devel
       state:        present
       update_cache: True
-    with_items:
-      - base-devel
 
   - name: "Gather package facts"
     package_facts:
@@ -34,21 +33,3 @@
     become: yes
     become_user: aur_builder
     script: ./lib/installFromAur.sh ansible-aur-git
-
-  - name: Install AUR packages
-    become: yes
-    become_user: aur_builder
-    aur:
-      name: '{{ item }}'
-    with_items:
-      - free42
-      - insync
-      - c-lolcat
-      - python-i3-py
-      - ttf-unifont
-      - ttf-symbola
-
-
-
-
-

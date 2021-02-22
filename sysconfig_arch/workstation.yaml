@@ -6,116 +6,115 @@
 
   - name: "Install workstation packages"
     package:
-      name:         '{{ item }}'
+      name:
+        - acpi
+        - alacritty
+        - arandr
+        - aspell
+        - aspell-de
+        - aspell-en
+        - bash
+        - bash-completion
+        - binutils
+        - blueman
+        - bluez-utils
+        - btrfs-progs
+        - coreutils
+        - cryptsetup
+        - curl
+        - device-mapper
+        - dialog
+        - diffutils
+        - dmenu
+        - dos2unix
+        - dosfstools
+        - dunst
+        - e2fsprogs
+        - emacs
+        - feh
+        - file
+        - filesystem
+        - findutils
+        - firefox
+        - firefox-i18n-de
+        - gnu-netcat
+        - grep
+        - gzip
+        - i3-wm
+        - i3lock
+        - i3status
+        - imagemagick
+        - inetutils
+        - ispell
+        - keepassxc
+        - less
+        - libreoffice-fresh
+        - licenses
+        - light
+        - lightdm
+        - lightdm-gtk-greeter
+        - lightdm-gtk-greeter-settings
+        - linux
+        - linux-headers
+        - lm_sensors
+        - lshw
+        - lvm2
+        - man-db
+        - man-pages
+        - mc
+        - mercurial
+        - mplayer
+        - nano
+        - network-manager-applet
+        - networkmanager
+        - nmap
+        - nmon
+        - nomacs
+        - p7zip
+        - parcellite
+        - pcmanfm-gtk3
+        - perl
+        - perl-date-manip
+        - perl-finance-quote
+        - qrencode
+        - screenfetch
+        - scrot
+        - sed
+        - strace
+        - subversion
+        - texinfo
+        - texlive-bibtexextra
+        - texlive-core
+        - texlive-fontsextra
+        - texlive-formatsextra
+        - texlive-games
+        - texlive-humanities
+        - texlive-latexextra
+        - texlive-music
+        - texlive-pictures
+        - texlive-pstricks
+        - texlive-publishers
+        - texlive-science
+        - tree
+        - ttf-inconsolata
+        - unzip
+        - usbutils
+        - w3m
+        - wget
+        - wpa_supplicant
+        - wxmaxima
+        - xautolock
+        - xclip
+        - xdot
+        - xf86-input-libinput
+        - xorg-apps
+        - xorg-xclipboard
+        - xorg-server
+        - xterm
+        - zathura
+        - zathura-pdf-mupdf
       state:        present
       update_cache: True
-    with_items:
-      - acpi
-      - alacritty
-      - arandr
-      - aspell
-      - aspell-de
-      - aspell-en
-      - bash
-      - bash-completion
-      - binutils
-      - blueman
-      - bluez-utils
-      - btrfs-progs
-      - coreutils
-      - cryptsetup
-      - curl
-      - device-mapper
-      - dialog
-      - diffutils
-      - dmenu
-      - dos2unix
-      - dosfstools
-      - dunst
-      - e2fsprogs
-      - emacs
-      - feh
-      - file
-      - filesystem
-      - findutils
-      - firefox
-      - firefox-i18n-de
-      - gnu-netcat
-      - grep
-      - gzip
-      - i3-wm
-      - i3lock
-      - i3status
-      - imagemagick
-      - inetutils
-      - ispell
-      - keepassxc
-      - less
-      - libreoffice-fresh
-      - licenses
-      - light
-      - lightdm
-      - lightdm-gtk-greeter
-      - lightdm-gtk-greeter-settings
-      - linux
-      - linux-headers
-      - lm_sensors
-      - lshw
-      - lvm2
-      - man-db
-      - man-pages
-      - mc
-      - mercurial
-      - mplayer
-      - nano
-      - network-manager-applet
-      - networkmanager
-      - nmap
-      - nmon
-      - nomacs
-      - p7zip
-      - parcellite
-      - pcmanfm-gtk3
-      - perl
-      - perl-date-manip
-      - perl-finance-quote
-      - qrencode
-      - screenfetch
-      - scrot
-      - sed
-      - strace
-      - subversion
-      - texinfo
-      - texlive-bibtexextra
-      - texlive-core
-      - texlive-fontsextra
-      - texlive-formatsextra
-      - texlive-games
-      - texlive-humanities
-      - texlive-latexextra
-      - texlive-music
-      - texlive-pictures
-      - texlive-pstricks
-      - texlive-publishers
-      - texlive-science
-      - tree
-      - ttf-inconsolata
-      - unzip
-      - usbutils
-      - w3m
-      - wget
-      - wpa_supplicant
-      - wxmaxima
-      - xautolock
-      - xclip
-      - xdot
-      - xf86-input-libinput
-      - xorg-apps
-      - xorg-xclipboard
-      - xorg-server
-      - xterm
-      - zathura
-      - zathura-pdf-mupdf
 
   - name: "Remove unwanted packages"
     package:
@@ -205,7 +204,7 @@
 
 ## X11
   - name: "X11: Keyboard"
-    when: "'gpd' not in inventory_hostname"
+    when: "'gpd' not in ansible_hostname"
     copy:
       dest:     /etc/X11/xorg.conf.d/00-keyboard.conf
       src:      ./lib/etc/X11/xorg.conf.d/00-keyboard.conf
@@ -214,7 +213,7 @@
       mode:     0644
 
   - name: "X11: Touchpad"
-    when: "'gpd' not in inventory_hostname"
+    when: "'gpd' not in ansible_hostname"
     copy:
       dest:     /etc/X11/xorg.conf.d/50-touchpad.conf
       src:      ./lib/etc/X11/xorg.conf.d/50-touchpad.conf
@@ -223,7 +222,7 @@
       mode:     0644
 
   - name: "X11: Keyboard (GPD Pocket 2)"
-    when: "'gpd' in inventory_hostname"
+    when: "'gpd' in ansible_hostname"
     copy:
       dest:     /etc/X11/xorg.conf.d/00-keyboard.conf
       src:      ./lib/etc/X11/xorg.conf.d/00-keyboard.conf.gpdp2
@@ -232,37 +231,37 @@
       mode:     0644
 
   - name: "X11: Intel Graphics (GPD Pocket 2)"
-    when: "'gpd' in inventory_hostname"
+    when: "'gpd' in ansible_hostname"
     copy:
       dest:     /etc/X11/xorg.conf.d/20-intel.conf
-      src:      ./lib/etc/X11/xorg.conf.d/20-intel.conf
+      src:      ./lib/etc/X11/xorg.conf.d/20-intel.conf.gpdp2
       owner:    root
       group:    root
       mode:     0644
 
   - name: "X11: Monitor (GPD Pocket 2)"
-    when: "'gpd' in inventory_hostname"
+    when: "'gpd' in ansible_hostname"
     copy:
       dest:     /etc/X11/xorg.conf.d/30-display.conf
-      src:      ./lib/etc/X11/xorg.conf.d/30-display.conf
+      src:      ./lib/etc/X11/xorg.conf.d/30-display.conf.gpdp2
       owner:    root
       group:    root
       mode:     0644
 
   - name: "X11: Touchscreen (GPD Pocket 2)"
-    when: "'gpd' in inventory_hostname"
+    when: "'gpd' in ansible_hostname"
     copy:
       dest:     /etc/X11/xorg.conf.d/99-touchscreen.conf
-      src:      ./lib/etc/X11/xorg.conf.d/99-touchscreen.conf
+      src:      ./lib/etc/X11/xorg.conf.d/99-touchscreen.conf.gpdp2
       owner:    root
       group:    root
       mode:     0644
 
   - name: "X11: Xresources (GPD Pocket 2)"
-    when: "'gpd' in inventory_hostname"
+    when: "'gpd' in ansible_hostname"
     copy:
       dest:     /etc/X11/Xresources
-      src:      ./lib/etc/X11/resources
+      src:      ./lib/etc/X11/Xresources.gpdp2
       owner:    root
       group:    root
       mode:     0644
@@ -296,7 +295,7 @@
 
 ## GPD Pocket Specials
   - name: "GPD fan module"
-    when: "'gpd' in inventory_hostname"
+    when: "'gpd' in ansible_hostname"
     copy:
       dest:    /etc/modules-load.d/gpd-pocket-fan.conf
       owner:   root
@@ -306,7 +305,7 @@
         gpd-pocket-fan
 
   - name: "GPD fan module config"
-    when: "'gpd' in inventory_hostname"
+    when: "'gpd' in ansible_hostname"
     copy:
       dest:    /etc/modprobe.d/gpd-pocket-fan.conf
       owner:   root

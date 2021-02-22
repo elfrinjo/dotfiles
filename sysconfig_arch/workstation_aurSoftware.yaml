@@ -1,0 +1,20 @@
+- name: "Install AUR helper and packages"
+  hosts:      localhost
+  connection: local
+
+  tasks:
+
+  - name: Install AUR packages
+    become: yes
+    become_user: aur_builder
+    aur:
+      name:
+        - free42
+        - insync
+        - c-lolcat
+        - python-i3-py
+        - ttf-unifont
+        - ttf-symbola
+
+
+

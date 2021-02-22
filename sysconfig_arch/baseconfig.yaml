@@ -6,21 +6,27 @@
 
   - name: "Install base packages"
     package:
-      name:         '{{ item }}'
+      name:
+        - fortune-mod
+        - git
+        - intel-ucode
+        - make
+        - openssh
+        - rsync
+        - sudo
+        - vim
       state:        present
-      update_cache: True
-    with_items:
-      - fortune-mod
-      - git
-      - intel-ucode
-      - make
-      - openssh
-      - rsync
-      - sudo
-      - vim
+      update_cache: true
+
+  - name: "Remove unwanted packages"
+    package:
+      name:
+        - puppet
+      state:        present
+      update_cache: false
 
   - name: "Console settings"
-    when: "'gpd' not in inventory_hostname"
+    when: "'gpd' not in ansible_hostname"
     copy:
       dest:    /etc/vconsole.conf
       owner:   root
@@ -30,7 +36,7 @@
         KEYMAP=de-latin1-nodeadkeys
 
   - name: "Console settings (GPD Pocket 2)"
-    when: "'gpd' in inventory_hostname"
+    when: "'gpd' in ansible_hostname"
     copy:
       dest:    /etc/vconsole.conf
       owner:   root
